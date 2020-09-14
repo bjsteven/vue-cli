@@ -220,6 +220,44 @@ async function build (args, api, options) {
           } else {
             done(`Build complete. Watching for changes...`)
           }
+          // 新增代码
+          const _text = `<title><%=title%></title>
+            <script>
+              var PANEL_DATA = {
+                projectId: <%- JSON.stringify(projectId)%>,
+                title: <%- JSON.stringify(title)%>,
+                pages: <%- JSON.stringify(pages)%>,
+                canvasWidth: <%- JSON.stringify(canvasWidth)%>,
+                canvasHeight: <%- JSON.stringify(canvasHeight)%>,
+                projectId: <%- JSON.stringify(projectId)%>,
+                dynamicServer: <%- JSON.stringify(dynamicServer)%>,
+                apiVersion: <%- JSON.stringify(apiVersion)%>
+              };
+            </script>
+          `
+          const indexPath = options.indexPath
+          const filePath = `${targetDir}/${indexPath}`
+          fs.readFile(filePath, {
+              flag: 'r+',
+              encoding: 'utf8'
+            }, (err, data) => {
+              if (err) {
+                console.error(err)
+              } else {
+                const newData = data.replace(/\<title[\w\W\r\n]*?[/]title>/g, _text)
+                fs.writeFile(filePath, newData, function (err) {
+                  if (err) {
+                    // console.error(err)
+                  } else {
+                    info('index.html update finished.')
+                  }
+                })
+              }
+            })
+          // log(`${chalk.cyan(targetDirShort)}`)
+          // log(`${chalk.cyan(api.service.context)}`)
+          // log(`${chalk.cyan(targetDir)}`)
+          // end -----------------------
         }
       }
 
