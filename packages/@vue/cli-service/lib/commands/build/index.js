@@ -220,7 +220,7 @@ async function build (args, api, options) {
           } else {
             done(`Build complete. Watching for changes...`)
           }
-          // 新增代码
+          // 新增代码 by steven
           const _text = `<title><%=title%></title>
             <script>
               var PANEL_DATA = {
@@ -238,22 +238,22 @@ async function build (args, api, options) {
           const indexPath = options.indexPath
           const filePath = `${targetDir}/${indexPath}`
           fs.readFile(filePath, {
-              flag: 'r+',
-              encoding: 'utf8'
-            }, (err, data) => {
-              if (err) {
-                console.error(err)
-              } else {
-                const newData = data.replace(/\<title[\w\W\r\n]*?[/]title>/g, _text)
-                fs.writeFile(filePath, newData, function (err) {
-                  if (err) {
-                    // console.error(err)
-                  } else {
-                    info('index.html update finished.')
-                  }
-                })
-              }
-            })
+            flag: 'r+',
+            encoding: 'utf8'
+          }, (err, data) => {
+            if (err) {
+              console.error(err)
+            } else {
+              const newData = data.replace(/\<title[\w\W\r\n]*?[/]title>/g, _text)
+              fs.writeFile(filePath, newData, function (err) {
+                if (err) {
+                  // console.error(err)
+                } else {
+                  info('index.html update finished.')
+                }
+              })
+            }
+          })
           // log(`${chalk.cyan(targetDirShort)}`)
           // log(`${chalk.cyan(api.service.context)}`)
           // log(`${chalk.cyan(targetDir)}`)
